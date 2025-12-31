@@ -29,12 +29,6 @@ export default function Dashboard() {
 
         {user ? (
           <div className="flex flex-col items-center">
-            {/* <img
-              src={user.photo}
-              alt="profile"
-              className="w-28 h-28 rounded-full shadow-md mb-4"
-            /> */}
-
             <h2 className="text-xl font-semibold text-gray-900">{user.name}</h2>
             <p className="text-gray-600">{user.email}</p>
 

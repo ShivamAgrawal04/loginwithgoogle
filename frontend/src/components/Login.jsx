@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -19,10 +20,11 @@ export default function Login() {
         { withCredentials: true }
       );
 
-      console.log("Login response:", res.data);
+      toast.success("Login successful!");
       navigate("/dashboard");
     } catch (err) {
-      console.log("Login failed:", err.response?.data);
+      toast.error(err.response?.data?.message || "Login failed");
+      console.log("Login failed:", err.response);
     }
   };
 
@@ -39,9 +41,11 @@ export default function Login() {
         console.log("Google login success:", result.data);
 
         // redirect to dashboard
+        toast.success("Google Login successful!");
         navigate("/dashboard");
       }
     } catch (error) {
+      toast.error("Google Login failed");
       console.error("Google login error:", error);
     }
   };
@@ -106,11 +110,12 @@ export default function Login() {
                 onFocus={() => setFocused({ ...focused, email: true })}
                 onBlur={() => setFocused({ ...focused, email: false })}
                 required
+                autoComplete="email"
                 className="peer w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 placeholder-transparent focus:bg-white focus:border-gray-500 outline-none transition"
                 placeholder="Email"
               />
               <label
-                className={`absolute left-4 transition-all duration-200 ${
+                className={`pointer-events-none absolute left-4 transition-all duration-200 ${
                   focused.email || email
                     ? "-top-2 text-xs text-gray-600 bg-white px-1"
                     : "top-3 text-gray-500"
@@ -128,11 +133,12 @@ export default function Login() {
                 onFocus={() => setFocused({ ...focused, password: true })}
                 onBlur={() => setFocused({ ...focused, password: false })}
                 required
+                autoComplete="current-password"
                 className="peer w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 placeholder-transparent focus:bg-white focus:border-gray-500 outline-none transition"
                 placeholder="Password"
               />
               <label
-                className={`absolute left-4 transition-all duration-200 ${
+                className={`pointer-events-none absolute left-4 transition-all duration-200 ${
                   focused.password || password
                     ? "-top-2 text-xs text-gray-600 bg-white px-1"
                     : "top-3 text-gray-500"

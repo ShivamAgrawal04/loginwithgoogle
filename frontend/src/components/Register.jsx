@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -26,8 +27,10 @@ export default function Register() {
 
       console.log("Register response:", res.data);
 
+      toast.success("Registration successful! Please log in.");
       navigate("/login");
     } catch (err) {
+      toast.error(err.response?.data?.message || "Registration failed");
       console.log("Login failed:", err.response?.data);
     }
   };
@@ -43,11 +46,12 @@ export default function Register() {
         );
 
         console.log("Google login success:", result.data);
-
+        toast.success("Google Login successful!");
         // redirect to dashboard
         navigate("/dashboard");
       }
     } catch (error) {
+      toast.error("Google Login failed");
       console.error("Google login error:", error);
     }
   };
@@ -123,7 +127,7 @@ export default function Register() {
                 placeholder="Full Name"
               />
               <label
-                className={`absolute left-4 transition-all duration-200
+                className={`pointer-events-none absolute left-4 transition-all duration-200
               ${
                 focused.name || name
                   ? "-top-2 text-xs text-gray-600 bg-white px-1"
@@ -144,11 +148,12 @@ export default function Register() {
                 onFocus={() => setFocused({ ...focused, email: true })}
                 onBlur={() => setFocused({ ...focused, email: false })}
                 required
+                autoComplete="email"
                 className="peer w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 placeholder-transparent focus:bg-white focus:border-gray-500 outline-none transition"
                 placeholder="Email Address"
               />
               <label
-                className={`absolute left-4 transition-all duration-200
+                className={`pointer-events-none absolute left-4 transition-all duration-200
               ${
                 focused.email || email
                   ? "-top-2 text-xs text-gray-600 bg-white px-1"
@@ -169,11 +174,12 @@ export default function Register() {
                 onFocus={() => setFocused({ ...focused, password: true })}
                 onBlur={() => setFocused({ ...focused, password: false })}
                 required
+                autoComplete="current-password"
                 className="peer w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-900 placeholder-transparent focus:bg-white focus:border-gray-500 outline-none transition"
                 placeholder="Password"
               />
               <label
-                className={`absolute left-4 transition-all duration-200
+                className={`pointer-events-none absolute left-4 transition-all duration-200
               ${
                 focused.password || password
                   ? "-top-2 text-xs text-gray-600 bg-white px-1"
